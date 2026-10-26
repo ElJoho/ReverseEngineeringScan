@@ -76,3 +76,25 @@ desktop.ini
 
 *.gcode
 
+
+# ============================
+# Reverse engineering
+# ============================
+
+# Instaladores originales (400-770 MB, superan el límite de GitHub)
+exes/
+
+# Contenido desempaquetado (binarios propietarios, no redistribuir)
+extracted/*
+!extracted/*/
+extracted/*/*
+!extracted/*/.gitkeep
+
+# Snapshots / evidencia de REA (grandes y regenerables)
+analysis/**/*.json
+analysis/**/*.jsonl
+
+# Proyectos de Ghidra
+ghidra_projects/
+*.gpr
+*.rep/
