@@ -93,8 +93,12 @@ extracted/*/*
 # Snapshots / evidencia de REA (grandes y regenerables)
 analysis/**/*.json
 analysis/**/*.jsonl
+analysis/**/*.log
 
 # Proyectos de Ghidra
 ghidra_projects/
 *.gpr
 *.rep/
+
+# Código decompilado (derivado de binarios propietarios, no redistribuir)
+analysis/**/decompiled/

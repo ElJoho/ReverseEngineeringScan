@@ -21,18 +21,27 @@ already_done() {
 }
 
 extract_win() {
-    need innoextract innoextract
+    # innoextract 1.9 (apt) no soporta Inno Setup 6.3; se prefiere la versión compilada en ~/tools
+    local inno="$HOME/tools/innoextract/bin/innoextract"
+    if [ ! -x "$inno" ]; then
+        need innoextract innoextract
+        inno="innoextract"
+    fi
     local dest="$OUT/win"
     if already_done "$dest"; then echo "[win] ya extraído en $dest (bórralo para repetir)"; return; fi
-    echo "[win] Inno Setup -> $dest"
-    innoextract --silent --output-dir "$dest" "$WIN_EXE"
+    echo "[win] Inno Setup ($("$inno" --version | head -n1)) -> $dest"
+    "$inno" --silent --output-dir "$dest" "$WIN_EXE"
 }
 
 extract_mac() {
     need 7z p7zip-full
     need cpio cpio
     local dest="$OUT/mac"
-    if already_done "$dest"; then echo "[mac] ya extraído en $dest (bórralo para repetir)"; return; fi
+    if already_done "$dest"; then
+        echo "[mac] ya extraído en $dest (bórralo para repetir)"
+        [ -d "$dest/x86_64" ] || thin_mac
+        return
+    fi
     echo "[mac] pkg (xar) -> $dest/pkg"
     7z x -y -bso0 -o"$dest/pkg" "$MAC_PKG"
 
@@ -48,6 +57,21 @@ extract_mac() {
     else
         7z x -y -bso0 -o"$dest/root" "$payload"
     fi
+    thin_mac
+}
+
+# Los binarios de macOS son universales (x86_64 + arm64); Ghidra trabaja mejor con una sola
+# arquitectura. Se extrae x86_64 (la más cercana a Ubuntu en PC) a extracted/mac/x86_64/.
+thin_mac() {
+    local app="$OUT/mac/root/Applications/CrealityScan.app/Contents"
+    local dest="$OUT/mac/x86_64"
+    mkdir -p "$dest"
+    echo "[mac] binarios x86_64 -> $dest"
+    local f
+    for f in "$app"/PlugIns/*.dylib "$app"/PlugIns/camera_user_calib "$app"/Frameworks/*.dylib; do
+        [ -L "$f" ] && continue   # los .dylib sin versión completa son enlaces simbólicos
+        python3 -I "$ROOT/scripts/thin_macho.py" "$f" "$dest/$(basename "$f")" x86_64 >/dev/null
+    done
 }
 
 extract_android() {
