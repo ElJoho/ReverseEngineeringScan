@@ -1,0 +1,78 @@
+# ============================
+# ROS 2 / colcon workspaces
+# ============================
+
+# En caso de usar este repo como workspace
+build/
+install/
+log/
+.colcon/
+
+# Workspace específico phantom_ws
+phantom_ws/build/
+phantom_ws/install/
+phantom_ws/log/
+
+# ============================
+# Python
+# ============================
+
+__pycache__/
+*.pyc
+*.pyo
+
+# ============================
+# CMake / Ninja (fuera de build/)
+# ============================
+
+CMakeCache.txt
+CMakeFiles/
+cmake-build-*/
+
+# ============================
+# IDE / editor
+# ============================
+
+# VS Code
+.vscode/
+
+# Claude Code
+.claude/
+*.vc.db*
+*.db-wal
+*.db-shm
+
+# JetBrains / CLion
+.idea/
+
+# Archivos temporales de editores
+*.swp
+*.swo
+*~
+*.tmp
+
+# ============================
+# OS clutter
+# ============================
+
+.DS_Store
+.DS_Store?
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+
+# ============================
+# FreeCAD
+# ============================
+
+*.FCBak
+*.FCStd[0-9]*
+*.FCStd.*-*-*-*-*
+
+# ============================
+# Slicer
+# ============================
+
+*.gcode
+
