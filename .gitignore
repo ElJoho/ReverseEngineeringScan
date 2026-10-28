@@ -102,3 +102,6 @@ ghidra_projects/
 
 # Código decompilado (derivado de binarios propietarios, no redistribuir)
 analysis/**/decompiled/
+
+# Capturas del escáner (imágenes y datos crudos de scripts/bridge)
+capturas/
